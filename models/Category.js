@@ -6,14 +6,15 @@ const CategorySchema = new mongoose.Schema(
             type: String,
             required: true,
             maxLength: 60,
+            index: true,
+            unique: true,
         },
     },
     { timestamps: true }
 );
 
-CategorySchema.pre("save", function (next) {
-    this.updated = Date.now();
-    next();
+CategorySchema.virtual("url").get(function () {
+    return `/categories/${this._id}`;
 });
 
 const model = mongoose.model("categories", CategorySchema);

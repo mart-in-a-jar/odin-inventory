@@ -3,18 +3,31 @@ import asyncHandler from "express-async-handler";
 
 const getAll = asyncHandler(async (req, res, next) => {
     const allCategories = await Category.find().exec();
-    res.json({ data: allCategories });
+    res.json({ total: allCategories.length, data: allCategories });
 });
 
 const create = [
     // add validation
-    asyncHandler(async (req, res, next) => {
-        const newCategory = await Category.create({
-            name: req.body.name,
-        });
-        // Created successfully
-        res.status(201).json(newCategory);
-    }),
+    async (req, res, next) => {
+        try {
+            const newCategory = await Category.create({
+                name: req.body.name,
+            });
+            // Created successfully
+            res.status(201).json(newCategory);
+        } catch (e) {
+            if (e.code === 11000) {
+                const err = new Error(
+                    `Duplicate value for ${Object.keys(e.keyPattern)[0]}`
+                );
+                err.status = 400;
+                return next(err);
+            }
+            return res
+                .status(400)
+                .json({ error: { message: e.message, code: 400 } });
+        }
+    },
 ];
 
 const getOne = asyncHandler(async (req, res, next) => {
@@ -36,14 +49,20 @@ const patch = [
             return res.sendStatus(404);
         }
 
+        const allowedFields = ["name"];
+
         for (let [key, value] of Object.entries(req.body)) {
-            category[key] = value;
+            if (allowedFields.includes(key)) {
+                category[key] = value;
+            }
         }
         try {
             const savedCategory = await category.save();
             res.json(savedCategory);
-        } catch (error) {
-            res.sendStatus(400);
+        } catch (e) {
+            return res
+                .status(400)
+                .json({ error: { message: e.message, code: 400 } });
         }
     }),
 ];
