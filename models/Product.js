@@ -16,6 +16,16 @@ const priceValidator = (input) => {
     return allKeysAreValid && allValuesAreValid;
 };
 
+const priceValidationMessage = `Price needs to be defined as an object with currencies as keys, like {currency: price}. Allowed currencies: ${allowedCurrencies}`;
+
+const convertCurrenciesToUpperCase = (input) => {
+    const newObj = {};
+    for (let [key, value] of Object.entries(input)) {
+        newObj[key.toUpperCase()] = value;
+    }
+    return newObj;
+};
+
 const ProductSchema = new mongoose.Schema(
     {
         name: {
@@ -34,8 +44,9 @@ const ProductSchema = new mongoose.Schema(
             required: true,
             validate: {
                 validator: priceValidator,
-                message: `Price needs to be defined as an object with currencies as keys, like {currency: price}. Allowed currencies: ${allowedCurrencies}`,
+                message: priceValidationMessage,
             },
+            set: convertCurrenciesToUpperCase,
         },
     },
     { timestamps: true }
@@ -47,3 +58,4 @@ ProductSchema.virtual("url").get(function () {
 
 const model = mongoose.model("products", ProductSchema);
 export default model;
+export { priceValidator, priceValidationMessage };
