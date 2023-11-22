@@ -1,9 +1,8 @@
 import express from "express";
+import productController from "../controllers/productController.js";
 
 const route = express.Router();
 
-route.route("/").get((req,res) => {
-    res.send("Not implemented: products")
-});
+route.route("/").get(productController.getAll).post(productController.create);
 
 export default route;
