@@ -125,5 +125,18 @@ const deleteOne = asyncHandler(async (req, res, next) => {
     res.sendStatus(200);
 });
 
+const getProductsByCategory = asyncHandler(async (req, res, next) => {
+    const products = await Product.find({ categories: req.params.id });
 
-export default { getAll, create, getOne, deleteOne, patch, put };
+    res.json(products);
+});
+
+export default {
+    getAll,
+    create,
+    getOne,
+    deleteOne,
+    patch,
+    put,
+    getProductsByCategory,
+};

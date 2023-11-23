@@ -75,4 +75,10 @@ const deleteOne = asyncHandler(async (req, res, next) => {
     res.sendStatus(200);
 });
 
-export default { getAll, getOne, create, patch, deleteOne };
+export default {
+    getAll,
+    getOne,
+    create,
+    patch,
+    deleteOne,
+};

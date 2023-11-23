@@ -1,5 +1,6 @@
 import express from "express";
 import categoryController from "../controllers/categoryController.js";
+import productController from "../controllers/productController.js";
 
 const route = express.Router();
 
@@ -10,5 +11,7 @@ route
     .get(categoryController.getOne)
     .patch(categoryController.patch)
     .delete(categoryController.deleteOne);
+
+route.get("/:id/products", productController.getProductsByCategory);
 
 export default route;
