@@ -126,9 +126,18 @@ const deleteOne = asyncHandler(async (req, res, next) => {
 });
 
 const getProductsByCategory = asyncHandler(async (req, res, next) => {
-    const products = await Product.find({ categories: req.params.id });
+    const products = await Product.find({ categories: req.params.id }).exec();
 
     res.json(products);
+});
+
+const search = asyncHandler(async (req, res, next) => {
+    // Can later add more query options (e.g. description) and merge ( + filter out duplicates)
+    const results = await Product.find({
+        name: new RegExp(req.query.name, "i"),
+    }).exec();
+
+    res.json(results);
 });
 
 export default {
@@ -139,4 +148,5 @@ export default {
     patch,
     put,
     getProductsByCategory,
+    search,
 };

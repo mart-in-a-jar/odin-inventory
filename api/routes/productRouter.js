@@ -5,6 +5,8 @@ const route = express.Router();
 
 route.route("/").get(productController.getAll).post(productController.create);
 
+route.get("/search", productController.search);
+
 route
     .route("/:id")
     .get(productController.getOne)
