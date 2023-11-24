@@ -1,50 +1,23 @@
 import Category from "../../models/Category.js";
 import asyncHandler from "express-async-handler";
+import { paginationFunction } from "../utils/pagination.js";
 
 const getAll = asyncHandler(async (req, res, next) => {
-    const paginate = +req.query.paginate;
-    const page = +req.query.page || 1;
-
     const totalCategories = await Category.find({}).countDocuments().exec();
     // Return segment
-    if (paginate && totalCategories) {
-        const skipAmount = (page - 1) * paginate;
-        const categorySegment = await Category.find({}, null, {
-            limit: paginate,
-            skip: skipAmount,
-        }).exec();
-
-        const firstShown = skipAmount + 1;
-        const isLastPage = skipAmount + paginate >= totalCategories;
-
-        const resultObject = {
-            total: totalCategories,
-            segment: undefined,
-            data: categorySegment,
-        };
-
-        if (skipAmount < totalCategories) {
-            resultObject.segment = {
-                from: firstShown,
-                to: isLastPage ? totalCategories : skipAmount + paginate,
-            };
-            // Page doesn't exist
-        } else {
-            return res
-                .status(400)
-                .json({ error: { message: "overflow", code: 400 } });
-        }
-        if (!isLastPage) {
-            resultObject.nextPage = `/api/categories?paginate=${paginate}&page=${
-                page + 1 || 2
-            }`;
-        }
-
-        return res.json(resultObject);
+    if (req.query.paginate && totalCategories) {
+        await paginationFunction(
+            Category,
+            req,
+            res,
+            totalCategories,
+            "/api/categories"
+        );
+        return;
     }
     // Return all
     const allCategories = await Category.find({}).exec();
-    res.json({ total: allCategories.length, data: allCategories });
+    res.json({ total: totalCategories, data: allCategories });
 });
 
 const create = [
