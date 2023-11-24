@@ -3,12 +3,26 @@ import Product, {
     priceValidator,
 } from "../../models/Product.js";
 import asyncHandler from "express-async-handler";
+import { paginationFunction } from "../utils/pagination.js";
 
 const getAll = asyncHandler(async (req, res, next) => {
+    const url = req.baseUrl + req.path;
+    const totalProducts = await Product.find({}).countDocuments().exec();
+    // Return segment
+    if (req.query.paginate && totalProducts) {
+        await paginationFunction(Product, {}, req, res, totalProducts, url, {
+            field: "categories",
+            filter: {
+                name: 1,
+            },
+        });
+        return;
+    }
+    // Return all
     const allProducts = await Product.find({})
         .populate("categories", { name: 1 })
         .exec();
-    res.json({ total: allProducts.length, data: allProducts });
+    res.json({ total: totalProducts, data: allProducts });
 });
 
 const getOne = asyncHandler(async (req, res, next) => {
@@ -126,13 +140,22 @@ const deleteOne = asyncHandler(async (req, res, next) => {
 });
 
 const getProductsByCategory = asyncHandler(async (req, res, next) => {
-    const products = await Product.find({ categories: req.params.id }).exec();
-
+    const url = req.baseUrl + req.path;
+    const query = { categories: req.params.id };
+    const totalProducts = await Product.find(query).countDocuments().exec();
+    // Return segment
+    if (req.query.paginate && totalProducts) {
+        await paginationFunction(Product, query, req, res, totalProducts, url);
+        return;
+    }
+    // Return all
+    const products = await Product.find(query).exec();
     res.json(products);
 });
 
 const search = asyncHandler(async (req, res, next) => {
     // Can later add more query options (e.g. description) and merge ( + filter out duplicates)
+    // Add pagination here?
     const results = await Product.find({
         name: new RegExp(req.query.name, "i"),
     }).exec();

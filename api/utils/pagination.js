@@ -1,20 +1,33 @@
 export const paginationFunction = async (
     model,
+    query,
     req,
     res,
     total,
-    url
+    url,
+    populate = null
 ) => {
     const paginate = +req.query.paginate;
     const page = +req.query.page || 1;
+    let categorySegment;
 
     const skipAmount = (page - 1) * paginate;
-    const categorySegment = await model
-        .find({}, null, {
-            limit: paginate,
-            skip: skipAmount,
-        })
-        .exec();
+    if (populate) {
+        categorySegment = await model
+            .find(query, null, {
+                limit: paginate,
+                skip: skipAmount,
+            })
+            .populate(populate.field, populate.filter)
+            .exec();
+    } else {
+        categorySegment = await model
+            .find(query, null, {
+                limit: paginate,
+                skip: skipAmount,
+            })
+            .exec();
+    }
 
     const firstShown = skipAmount + 1;
     const isLastPage = skipAmount + paginate >= total;
@@ -27,6 +40,7 @@ export const paginationFunction = async (
 
     if (skipAmount < total) {
         resultObject.segment = {
+            total: paginate,
             from: firstShown,
             to: isLastPage ? total : skipAmount + paginate,
         };

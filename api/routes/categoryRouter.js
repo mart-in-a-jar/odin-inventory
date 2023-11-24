@@ -2,6 +2,7 @@ import express from "express";
 import categoryController from "../controllers/categoryController.js";
 import productController from "../controllers/productController.js";
 
+// /api/categories
 const route = express.Router();
 
 route.route("/").get(categoryController.getAll).post(categoryController.create);

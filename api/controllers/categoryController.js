@@ -3,15 +3,17 @@ import asyncHandler from "express-async-handler";
 import { paginationFunction } from "../utils/pagination.js";
 
 const getAll = asyncHandler(async (req, res, next) => {
+    const url = req.baseUrl + req.path;
     const totalCategories = await Category.find({}).countDocuments().exec();
     // Return segment
     if (req.query.paginate && totalCategories) {
         await paginationFunction(
             Category,
+            {},
             req,
             res,
             totalCategories,
-            "/api/categories"
+            url
         );
         return;
     }
