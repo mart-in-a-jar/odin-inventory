@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.scss";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        // <div className="main bg-base-500 min-h-screen flex flex-col items-center justify-center">
+        // <div className="bg-base-700 p-10 rounded-2xl">
+        <div className="min-h-screen flex flex-col items-center justify-center">
+            {/* <h1 className="px-5 py-3 rounded-xl bg-base-100 text-3xl font-bold underline">
+                Hello world!
+            </h1> */}
+            <button className="btn">Button</button>
+            <details className="dropdown">
+                <summary className="m-1 btn">open or close</summary>
+                <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                    <li>
+                        <a>Item 1</a>
+                    </li>
+                    <li>
+                        <a>Item 2</a>
+                    </li>
+                </ul>
+            </details>
+        </div>
+        // </div>
+        // </div>
+    );
 }
 
-export default App
+export default App;
