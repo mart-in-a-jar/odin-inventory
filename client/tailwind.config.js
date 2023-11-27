@@ -14,4 +14,8 @@ export default {
         },
     },
     plugins: [daisyui],
+    // enable only light and dark themes
+    daisyui: {
+        themes: false,
+    },
 };
