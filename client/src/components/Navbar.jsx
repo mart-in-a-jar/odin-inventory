@@ -11,7 +11,7 @@ const Navbar = ({ homeButton, centerItems, righItem }) => {
     };
 
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-100 border-b mb-2">
             <div className="navbar-start">
                 {centerItems && (
                     <div className="dropdown">
