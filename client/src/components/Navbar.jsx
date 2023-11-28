@@ -2,6 +2,14 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const Navbar = ({ homeButton, centerItems, righItem }) => {
+    const handleDropdownOpenClose = () => {
+        const element = document.activeElement;
+        console.log(element);
+        if (element) {
+            element.blur();
+        }
+    };
+
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -45,6 +53,9 @@ const Navbar = ({ homeButton, centerItems, righItem }) => {
                                                                         to={
                                                                             subItem.path
                                                                         }
+                                                                        onClick={
+                                                                            handleDropdownOpenClose
+                                                                        }
                                                                     >
                                                                         {
                                                                             subItem.text
@@ -57,7 +68,12 @@ const Navbar = ({ homeButton, centerItems, righItem }) => {
                                                 </ul>
                                             </>
                                         ) : (
-                                            <Link to={item.path}>
+                                            <Link
+                                                to={item.path}
+                                                onClick={
+                                                    handleDropdownOpenClose
+                                                }
+                                            >
                                                 {item.text}
                                             </Link>
                                         )}
