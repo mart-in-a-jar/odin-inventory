@@ -32,7 +32,7 @@ const getOne = asyncHandler(async (req, res, next) => {
         return res.sendStatus(404);
     }
 
-    res.json(product);
+    res.json({ data: product });
 });
 
 const create = asyncHandler(async (req, res, next) => {
