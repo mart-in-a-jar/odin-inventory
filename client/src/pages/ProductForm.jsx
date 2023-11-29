@@ -1,21 +1,40 @@
-import { useState } from "react";
-import TextInput from "../components/TextInput";
+import { useEffect, useState } from "react";
 import LoadingBackdrop from "../components/Loading";
+import Multiselect from "../components/Multiselect";
+import TextInput from "../components/TextInput";
 
 const ProductForm = (/* { product } */) => {
     const [productName, setProductName] = useState("");
     const [productDescription, setProductDescription] = useState("");
     const [productPrice, setProductPrice] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [productCategories, setProductCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        (async () => {
+            const res = await fetch("/api/categories");
+            const fetchedCategories = await res.json();
+            if (res.ok) {
+                setCategories(fetchedCategories.data);
+            }
+        })();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         console.log({
-            productName,
-            productDescription,
+            name: productName,
+            description: productDescription,
+            price: {
+                NOK: productPrice,
+            },
+            category: productCategories.map((cat) => cat._id),
         });
-        setIsLoading(false);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
     };
 
     const handleInput = (e) => {
@@ -29,6 +48,7 @@ const ProductForm = (/* { product } */) => {
             case "productPrice":
                 setProductPrice(e.target.value);
                 break;
+
             default:
                 break;
         }
@@ -39,7 +59,7 @@ const ProductForm = (/* { product } */) => {
             {isLoading && <LoadingBackdrop />}
             <form
                 onSubmit={handleSubmit}
-                className="flex flex-col gap-4 items-start py-1"
+                className="flex flex-col gap-4 items-start py-1 self-center"
                 // className="grid grid-cols-2"
             >
                 <TextInput
@@ -50,6 +70,14 @@ const ProductForm = (/* { product } */) => {
                     disabled={isLoading}
                     maxLength={100}
                     required
+                />
+                <Multiselect
+                    options={categories}
+                    value={productCategories}
+                    onChange={setProductCategories}
+                    label="Category"
+                    placeholder="Choose categories"
+                    disabled={isLoading}
                 />
                 <div className="form-control w-80">
                     <label htmlFor="productDescription" className="label">
@@ -77,16 +105,10 @@ const ProductForm = (/* { product } */) => {
                         value={productPrice}
                         onChange={handleInput}
                         required
+                        disabled={isLoading}
                     />
                 </div>
-                <div className="form-control w-80">
-                    <label htmlFor="productCategories" className="label">Category</label>
-                    <select id="productCategories" className="select select-bordered">
-                        <option value="">1</option>
-                        <option value="">1</option>
-                        <option value="">1</option>
-                    </select>
-                </div>
+
                 <button
                     className="btn btn-outline"
                     type="submit"
