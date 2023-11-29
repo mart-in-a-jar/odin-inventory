@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import ProductList from "./components/ProductList";
-import CategoryList from "./components/CategoryList";
-import Category from "./components/Category";
-import Product from "./components/Product";
-import ProductForm from "./components/ProductForm";
+import ProductList from "./pages/ProductList";
+import CategoryList from "./pages/CategoryList";
+import Category from "./pages/Category";
+import Product from "./pages/Product";
+import ProductForm from "./pages/ProductForm";
 
 const Router = () => {
     return (
