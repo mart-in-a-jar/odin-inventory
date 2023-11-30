@@ -5,6 +5,7 @@ import CategoryList from "./pages/CategoryList";
 import Category from "./pages/Category";
 import Product from "./pages/Product";
 import ProductForm from "./pages/ProductForm";
+import ErrorPage from "./pages/404";
 
 const Router = () => {
     return (
@@ -24,6 +25,7 @@ const Router = () => {
                     <Route path="/products/:id" element={<Product />} />
                     <Route path="/categories" element={<CategoryList />} />
                     <Route path="/categories/:id" element={<Category />} />
+                    <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </div>
         </BrowserRouter>
