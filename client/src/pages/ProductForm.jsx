@@ -98,6 +98,7 @@ const ProductForm = () => {
                     label="Category"
                     placeholder="Choose categories"
                     disabled={isLoading}
+                    searchBar
                 />
                 <div className="form-control w-80">
                     <label htmlFor="productDescription" className="label">
