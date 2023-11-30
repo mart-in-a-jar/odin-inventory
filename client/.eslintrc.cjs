@@ -17,5 +17,6 @@ module.exports = {
             { allowConstantExport: true },
         ],
         "react/prop-types": [1, { skipUndeclared: true }],
+        "no-console": "warn",
     },
 };

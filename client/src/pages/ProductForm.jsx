@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import LoadingBackdrop from "../components/Loading";
 import Multiselect from "../components/Multiselect";
 import TextInput from "../components/TextInput";
+import Alert from "../components/Alert";
+import { useNavigate } from "react-router-dom";
 
-const ProductForm = (/* { product } */) => {
+const ProductForm = () => {
     const [productName, setProductName] = useState("");
     const [productDescription, setProductDescription] = useState("");
     const [productPrice, setProductPrice] = useState("");
     const [categories, setCategories] = useState([]);
     const [productCategories, setProductCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -23,18 +28,33 @@ const ProductForm = (/* { product } */) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage(null);
         setIsLoading(true);
-        console.log({
+        const payload = {
             name: productName,
             description: productDescription,
             price: {
-                NOK: productPrice,
+                NOK: +productPrice,
             },
-            category: productCategories.map((cat) => cat._id),
-        });
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
+            categories: productCategories.map((cat) => cat._id),
+        };
+        try {
+            const res = await fetch("/api/products", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            if (res.ok) {
+                // Successfully created new product
+                const newProduct = await res.json();
+                navigate(`/products/${newProduct._id}`);
+            } else {
+                setErrorMessage(res.statusText || "Something went wrong");
+            }
+        } catch (error) {
+            setErrorMessage(error.message);
+        }
+        setIsLoading(false);
     };
 
     const handleInput = (e) => {
@@ -57,10 +77,10 @@ const ProductForm = (/* { product } */) => {
     return (
         <>
             {isLoading && <LoadingBackdrop />}
+            {errorMessage && <Alert type="error" text={errorMessage} />}
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-4 items-start py-1 self-center"
-                // className="grid grid-cols-2"
             >
                 <TextInput
                     id="productName"
@@ -104,6 +124,7 @@ const ProductForm = (/* { product } */) => {
                         title="Please enter a valid number"
                         value={productPrice}
                         onChange={handleInput}
+                        autoComplete="off"
                         required
                         disabled={isLoading}
                     />
