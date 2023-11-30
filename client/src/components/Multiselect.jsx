@@ -54,6 +54,9 @@ const Multiselect = ({
                                 className="input input-bordered w-full pr-10"
                                 placeholder="Search"
                                 value={query}
+                                onKeyDown={(e) => {
+                                    e.stopPropagation();
+                                }}
                                 onChange={(e) => {
                                     setQuery(e.target.value);
                                 }}
