@@ -16,7 +16,6 @@ app.use(express.urlencoded({ extended: false }));
 
 mongoose.connect(process.env.MONGO_URL, { dbName: process.env.MONGO_DB });
 
-
 app.use("/api", api);
 
 // Serve frontend
@@ -34,8 +33,9 @@ app.use((req, res, next) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-    res.status(err.status || 500).json({
-        error: { message: err.message, code: err.status },
+    const errorCode = err.status || 500;
+    res.status(err.status || errorCode).json({
+        error: { message: err.message, code: err.status || errorCode },
     });
 });
 
