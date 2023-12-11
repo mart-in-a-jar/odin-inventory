@@ -41,6 +41,7 @@ const ProductSchema = new mongoose.Schema(
                 message: emptyNameErrorMessage,
             },
             maxLength: 100,
+            trim: true,
             unique: true,
         },
         categories: {
