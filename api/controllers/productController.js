@@ -26,7 +26,9 @@ const getAll = asyncHandler(async (req, res, next) => {
 });
 
 const getOne = asyncHandler(async (req, res, next) => {
-    const product = await Product.findById(req.params.id).exec();
+    const product = await Product.findById(req.params.id)
+        .populate("categories")
+        .exec();
 
     if (!product) {
         return res.sendStatus(404);
