@@ -26,11 +26,20 @@ const convertCurrenciesToUpperCase = (input) => {
     return newObj;
 };
 
+const stringNotEmpty = (input) => {
+    return input.trim().length > 0;
+};
+const emptyNameErrorMessage = "Name can not be empty";
+
 const ProductSchema = new mongoose.Schema(
     {
         name: {
             type: String,
             required: true,
+            validate: {
+                validator: stringNotEmpty,
+                message: emptyNameErrorMessage,
+            },
             maxLength: 100,
             unique: true,
         },
