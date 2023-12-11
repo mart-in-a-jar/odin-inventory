@@ -23,6 +23,10 @@ const Router = () => {
                     <Route path="/products" element={<ProductList />} />
                     <Route path="/products/new" element={<ProductForm />} />
                     <Route path="/products/:id" element={<Product />} />
+                    <Route
+                        path="/products/:id/edit"
+                        element={<ProductForm />}
+                    />
                     <Route path="/categories" element={<CategoryList />} />
                     <Route path="/categories/:id" element={<Category />} />
                     <Route path="*" element={<ErrorPage />} />

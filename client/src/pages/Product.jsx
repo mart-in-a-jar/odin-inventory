@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import LoadingBackdrop from "../components/Loading";
 
 const Product = () => {
@@ -33,6 +33,7 @@ const Product = () => {
     };
 
     useEffect(() => {
+        // hide modal on escape
         // move to extracted component
         const hideModal = (e) => {
             if (e.key === "Escape" && showDeleteModal) {
@@ -51,7 +52,7 @@ const Product = () => {
             <div className="card card-side bg-base-100 shadow-xl">
                 {product && (
                     <>
-                        <figure>
+                        <figure className="self-start">
                             <img
                                 src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
                                 alt="Movie"
@@ -61,8 +62,35 @@ const Product = () => {
                             <h2 className="card-title">{product.name}</h2>
                             <p>{product.description}</p>
                             <p>Pris: {product.price?.NOK}</p>
+                            {product.categories && (
+                                <>
+                                    <h3 className="text-lg mt-8">Categories</h3>
+                                    <ul>
+                                        {product.categories.map((cat) => {
+                                            return (
+                                                <li key={cat._id}>
+                                                    <Link
+                                                        className="link"
+                                                        to={
+                                                            "/categories/" +
+                                                            cat._id
+                                                        }
+                                                    >
+                                                        {cat.name}
+                                                    </Link>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </>
+                            )}
                             <div className="card-actions justify-end">
-                                <button className="btn btn-primary btn-accent">
+                                <button
+                                    className="btn btn-primary btn-accent"
+                                    onClick={() => {
+                                        navigate("edit");
+                                    }}
+                                >
                                     Edit
                                 </button>
                                 <button
