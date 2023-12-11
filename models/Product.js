@@ -66,6 +66,16 @@ ProductSchema.virtual("url").get(function () {
     return `/products/${this._id}`;
 });
 
+// Filter out duplicate categories in array
+ProductSchema.pre("save", function () {
+    const categories = this.categories;
+    const uniqueCategories = new Set();
+    for (let cat of categories) {
+        uniqueCategories.add(cat.toString());
+    }
+    this.categories = [...uniqueCategories];
+});
+
 const model = mongoose.model("products", ProductSchema);
 export default model;
 export { priceValidator, priceValidationMessage };
