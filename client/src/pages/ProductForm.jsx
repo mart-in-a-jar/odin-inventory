@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Alert from "../components/Alert";
 import LoadingBackdrop from "../components/Loading";
 import Multiselect from "../components/Multiselect";
 import TextInput from "../components/TextInput";
-import Alert from "../components/Alert";
-import { useNavigate } from "react-router-dom";
 
-const ProductForm = () => {
+const ProductForm = ({ editMode }) => {
     const [productName, setProductName] = useState("");
     const [productDescription, setProductDescription] = useState("");
     const [productPrice, setProductPrice] = useState("");
@@ -15,6 +15,26 @@ const ProductForm = () => {
     const [errorMessage, setErrorMessage] = useState(null);
 
     const navigate = useNavigate();
+    const { id } = useParams();
+
+    useEffect(() => {
+        // if page edit (not new), set product values from DB
+        if (editMode) {
+            (async () => {
+                const res = await fetch("/api/products/" + id);
+                const fetchedProduct = await res.json();
+                if (res.ok) {
+                    const product = fetchedProduct.data;
+                    setProductName(product.name);
+                    setProductDescription(product.description);
+                    setProductPrice(product.price.NOK);
+                    setProductCategories(product.categories);
+                    return;
+                }
+                navigate("/not_found");
+            })();
+        }
+    }, []);
 
     useEffect(() => {
         (async () => {
@@ -39,8 +59,11 @@ const ProductForm = () => {
             categories: productCategories.map((cat) => cat._id),
         };
         try {
-            const res = await fetch("/api/products", {
-                method: "POST",
+            const url = editMode ? `/api/products/${id}` : "/api/products";
+            const method = editMode ? "PUT" : "POST";
+
+            const res = await fetch(url, {
+                method: method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
