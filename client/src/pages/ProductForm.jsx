@@ -49,7 +49,12 @@ const ProductForm = () => {
                 const newProduct = await res.json();
                 navigate(`/products/${newProduct._id}`);
             } else {
-                setErrorMessage(res.statusText || "Something went wrong");
+                const data = await res.json();
+                setErrorMessage(
+                    data.error.message ||
+                        res.statusText ||
+                        "Something went wrong"
+                );
             }
         } catch (error) {
             setErrorMessage(error.message);
