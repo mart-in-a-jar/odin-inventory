@@ -164,7 +164,7 @@ const ProductForm = ({ editMode }) => {
                     type="submit"
                     disabled={isLoading}
                 >
-                    Create
+                    {editMode ? "Update" : "Create"}
                 </button>
             </form>
         </>

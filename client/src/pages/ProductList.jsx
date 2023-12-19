@@ -16,9 +16,15 @@ const ProductList = () => {
 
     return (
         <>
-            <Link to={"new"} className="btn btn-outline self-end">
-                New
-            </Link>
+            <div className="grid grid-cols-3 justify-items-center">
+                <h1 className="text-3xl col-start-2">Products</h1>
+                <Link
+                    to={"new"}
+                    className="btn btn-outline col-start-3 justify-self-end"
+                >
+                    New
+                </Link>
+            </div>
             <table className="table table-zebra">
                 <thead>
                     <tr className="text-sm">
