@@ -152,7 +152,7 @@ const getProductsByCategory = asyncHandler(async (req, res, next) => {
     }
     // Return all
     const products = await Product.find(query).exec();
-    res.json(products);
+    res.json({ data: products });
 });
 
 const search = asyncHandler(async (req, res, next) => {
