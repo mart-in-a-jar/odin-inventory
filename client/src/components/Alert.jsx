@@ -1,3 +1,13 @@
+// We have to write out all class names that tailwind should generate
+// https://tailwindcss.com/docs/content-configuration#dynamic-class-names
+const variants = {
+    success: "alert-success",
+    info: "alert-info",
+    warning: "alert-warning",
+    error: "alert-error",
+};
+Object.freeze(variants);
+
 const Alert = ({ type, text }) => {
     let icon;
     switch (type.toLowerCase()) {
@@ -20,7 +30,9 @@ const Alert = ({ type, text }) => {
     return (
         <div
             role="alert"
-            className={`alert alert-${type} w-auto self-center font-medium`}
+            className={`alert ${
+                variants[type.toLowerCase()]
+            } w-auto self-center font-medium`}
         >
             {icon}
             <span>{text}</span>

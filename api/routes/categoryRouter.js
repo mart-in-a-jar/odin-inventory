@@ -8,6 +8,7 @@ const route = express.Router();
 route.route("/").get(categoryController.getAll).post(categoryController.create);
 
 route
+    // add a PUT method?
     .route("/:id")
     .get(categoryController.getOne)
     .patch(categoryController.patch)

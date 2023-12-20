@@ -31,6 +31,11 @@ const Router = () => {
                     <Route path="/categories" element={<CategoryList />} />
                     <Route path="/categories/new" element={<CategoryForm />} />
                     <Route path="/categories/:id" element={<Category />} />
+                    <Route
+                        path="/categories/:id/edit"
+                        element={<CategoryForm editMode />}
+                    />
+
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </div>

@@ -1,4 +1,13 @@
-const TextInput = ({ id, name, value, onChange, disabled, required, maxLength }) => {
+const TextInput = ({
+    id,
+    name,
+    value,
+    onChange,
+    disabled,
+    required,
+    maxLength,
+    autoFocus,
+}) => {
     return (
         <div className="form-control w-80">
             <label htmlFor={id} className="label">
@@ -14,6 +23,7 @@ const TextInput = ({ id, name, value, onChange, disabled, required, maxLength })
                 onChange={onChange}
                 required={required}
                 maxLength={maxLength}
+                autoFocus={autoFocus}
             />
         </div>
     );

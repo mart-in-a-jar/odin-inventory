@@ -34,7 +34,7 @@ const ProductForm = ({ editMode }) => {
                 navigate("/not_found");
             })();
         }
-    }, []);
+    }, [editMode, id, navigate]);
 
     useEffect(() => {
         (async () => {
@@ -68,7 +68,7 @@ const ProductForm = ({ editMode }) => {
                 body: JSON.stringify(payload),
             });
             if (res.ok) {
-                // Successfully created new product
+                // Successfully created/updated product
                 const newProduct = await res.json();
                 navigate(`/products/${newProduct._id}`);
             } else {
@@ -110,6 +110,10 @@ const ProductForm = ({ editMode }) => {
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-4 items-start py-1 self-center"
             >
+                <h1 className="text-3xl">{`${
+                    editMode ? "Edit" : "New"
+                } product`}</h1>
+
                 <TextInput
                     id="productName"
                     name="Name *"
@@ -117,6 +121,7 @@ const ProductForm = ({ editMode }) => {
                     onChange={handleInput}
                     disabled={isLoading}
                     maxLength={100}
+                    autoFocus={!editMode}
                     required
                 />
                 <Multiselect

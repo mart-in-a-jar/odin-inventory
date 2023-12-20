@@ -71,6 +71,7 @@ const Category = () => {
                             setShowModal={setShowDeleteModal}
                         />
                     )}
+                    <div>Products in category:</div>
                 </div>
             )}
         </>
