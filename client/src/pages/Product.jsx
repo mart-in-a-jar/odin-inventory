@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import ConfirmationModal from "../components/ConfirmationModal";
 import LoadingBackdrop from "../components/Loading";
+import ErrorPage from "./404";
 
 const Product = () => {
-    const navigate = useNavigate();
     const { id } = useParams();
+    const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -17,9 +20,9 @@ const Product = () => {
                 setProduct(fetchedProduct.data);
                 return;
             }
-            navigate("/not_found");
+            setNotFound(true);
         })();
-    }, [id, navigate]);
+    }, [id]);
 
     const deleteProduct = async () => {
         setIsLoading(true);
@@ -32,25 +35,14 @@ const Product = () => {
         }
     };
 
-    useEffect(() => {
-        // hide modal on escape
-        // move to extracted component
-        const hideModal = (e) => {
-            if (e.key === "Escape" && showDeleteModal) {
-                setShowDeleteModal(false);
-            }
-        };
-        document.addEventListener("keydown", hideModal);
-        return () => {
-            document.removeEventListener("keydown", hideModal);
-        };
-    }, [showDeleteModal]);
+    
 
     return (
         <>
             {isLoading && <LoadingBackdrop />}
-            <div className="card card-side bg-base-100 shadow-xl">
-                {product && (
+            {notFound && <ErrorPage />}
+            {product && (
+                <div className="card card-side bg-base-100 shadow-xl">
                     <>
                         <figure className="self-start">
                             <img
@@ -104,51 +96,17 @@ const Product = () => {
                             </div>
                         </div>
                         {showDeleteModal && (
-                            <>
-                                {/* extract this
-                            add spinner when trying to delete */}
-                                <dialog
-                                    id="my_modal_5"
-                                    className="modal modal-bottom sm:modal-middle modal-open"
-                                >
-                                    <div className="modal-box">
-                                        <h3 className="font-bold text-lg">
-                                            Delete
-                                        </h3>
-                                        <p className="py-4">
-                                            Are you sure you want to delete this
-                                            product?
-                                        </p>
-                                        <div className="modal-action">
-                                            <form method="dialog">
-                                                <button
-                                                    className="btn btn-error"
-                                                    onClick={deleteProduct}
-                                                >
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <form
-                                        method="dialog"
-                                        className="modal-backdrop"
-                                    >
-                                        <button
-                                            className="cursor-default"
-                                            onClick={() => {
-                                                setShowDeleteModal(false);
-                                            }}
-                                        >
-                                            close
-                                        </button>
-                                    </form>
-                                </dialog>
-                            </>
+                            <ConfirmationModal
+                                title="Delete"
+                                text="Are you sure you want to delete this product?"
+                                buttonText="Delete"
+                                onClick={deleteProduct}
+                                setShowModal={setShowDeleteModal}
+                            />
                         )}
                     </>
-                )}
-            </div>
+                </div>
+            )}
         </>
     );
 };
