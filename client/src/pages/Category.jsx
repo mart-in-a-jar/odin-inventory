@@ -80,7 +80,7 @@ const Category = () => {
                         />
                     )}
                     {products && (
-                        <>
+                        <div className="products overflow-x-scroll">
                             <h2 className="text-xl">Products in category</h2>
                             <table className="table table-zebra w-fit min-w-[250px]">
                                 <tbody>
@@ -105,7 +105,7 @@ const Category = () => {
                                     })}
                                 </tbody>
                             </table>
-                        </>
+                        </div>
                     )}
                 </div>
             )}
