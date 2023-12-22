@@ -31,9 +31,11 @@ export const paginationFunction = async (
 
     const firstShown = skipAmount + 1;
     const isLastPage = skipAmount + paginate >= total;
+    const numberOfPages = Math.ceil(total / paginate);
 
     const resultObject = {
         total: total,
+        pages: numberOfPages,
         segment: undefined,
         data: categorySegment,
     };
@@ -49,6 +51,9 @@ export const paginationFunction = async (
         return res
             .status(400)
             .json({ error: { message: "overflow", code: 400 } });
+    }
+    if (page !== 1) {
+        resultObject.prevPage = `${url}?paginate=${paginate}&page=${page - 1}`;
     }
     if (!isLastPage) {
         resultObject.nextPage = `${url}?paginate=${paginate}&page=${
