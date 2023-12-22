@@ -9,7 +9,7 @@ const ProductList = ({ maxItems }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(
-        +searchParams.get("page") || null
+        +searchParams.get("page") || 1
     );
     const [pages, setPages] = useState(null);
 
