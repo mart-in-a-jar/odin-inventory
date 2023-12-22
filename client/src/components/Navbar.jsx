@@ -4,14 +4,13 @@ import PropTypes from "prop-types";
 const Navbar = ({ homeButton, centerItems, righItem }) => {
     const handleDropdownOpenClose = () => {
         const element = document.activeElement;
-        console.log(element);
         if (element) {
             element.blur();
         }
     };
 
     return (
-        <div className="navbar bg-base-100 border-b lg:mb-10 mb-5">
+        <div className="navbar bg-base-100 border-b lg:mb-10 mb-5 sticky top-0 z-30">
             <div className="navbar-start">
                 {centerItems && (
                     <div className="dropdown">
