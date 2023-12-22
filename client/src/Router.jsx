@@ -7,6 +7,7 @@ import Product from "./pages/Product";
 import ProductForm from "./pages/ProductForm";
 import ErrorPage from "./pages/404";
 import CategoryForm from "./pages/CategoryForm";
+import Footer from "./components/Footer";
 
 const Router = () => {
     return (
@@ -18,7 +19,7 @@ const Router = () => {
                     { text: "Categories", path: "/categories" },
                 ]}
             />
-            <div className="overflow-x-auto max-w-7xl m-auto flex flex-col px-1">
+            <div className="overflow-x-auto max-w-7xl m-auto flex flex-col px-1 pb-10 min-h-[calc(100vh-69px-112px-2rem-0.5rem)]">
                 <Routes>
                     <Route path="/" element={<Navigate to="/products" />} />
                     <Route path="/products" element={<ProductList />} />
@@ -39,6 +40,7 @@ const Router = () => {
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </div>
+            <Footer />
         </BrowserRouter>
     );
 };
