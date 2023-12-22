@@ -22,7 +22,10 @@ const Router = () => {
             <div className="overflow-x-auto max-w-7xl m-auto flex flex-col px-1 pb-10 min-h-[calc(100vh-69px-112px-2rem-0.5rem)]">
                 <Routes>
                     <Route path="/" element={<Navigate to="/products" />} />
-                    <Route path="/products" element={<ProductList maxItems={5}/>} />
+                    <Route
+                        path="/products"
+                        element={<ProductList maxItems={10} />}
+                    />
                     <Route path="/products/new" element={<ProductForm />} />
                     <Route path="/products/:id" element={<Product />} />
                     <Route

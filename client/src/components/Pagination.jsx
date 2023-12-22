@@ -1,3 +1,5 @@
+import Chevron from "./Chevron";
+
 // even number
 const NUMBER_OF_BUTTONS_EACH_SIDE = 2;
 
@@ -35,6 +37,17 @@ const Pagination = ({ pages, currentPage, setCurrentPage }) => {
 
     return (
         <nav className="join mt-6">
+            {currentPage > 1 && (
+                <button
+                    className="join-item btn px-3"
+                    onClick={() => {
+                        setCurrentPage(currentPage - 1);
+                    }}
+                >
+                    <Chevron />
+                </button>
+            )}
+
             {pagesArr.map((page) => {
                 if (page.type === "indicator") {
                     return (
@@ -63,6 +76,16 @@ const Pagination = ({ pages, currentPage, setCurrentPage }) => {
                     </button>
                 );
             })}
+            {currentPage < pages && (
+                <button
+                    className="join-item btn px-3"
+                    onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                    }}
+                >
+                    <Chevron right />
+                </button>
+            )}
         </nav>
     );
 };
