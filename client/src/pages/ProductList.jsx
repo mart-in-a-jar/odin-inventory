@@ -1,18 +1,37 @@
 import { useEffect, useState } from "react";
 import { formatNumber } from "../utils/numberFormatter";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import Pagination from "../components/Pagination";
+import { updateSearchParams } from "../utils/updateSearchParams";
 
-const ProductList = () => {
+const ProductList = ({ maxItems }) => {
     const [products, setProducts] = useState(null);
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(
+        +searchParams.get("page") || null
+    );
+    const [pages, setPages] = useState(null);
 
+    // load items
     useEffect(() => {
         (async () => {
-            const res = await fetch("/api/products");
+            const res = await fetch(
+                `/api/products?paginate=${maxItems}&page=${currentPage}`
+            );
             const fetchedProducts = await res.json();
-            setProducts(fetchedProducts.data);
+            if (res.ok) {
+                setProducts(fetchedProducts.data);
+                setPages(fetchedProducts.pages);
+                return;
+            }
         })();
-    }, []);
+    }, [maxItems, currentPage]);
+
+    // update search params
+    useEffect(() => {
+        updateSearchParams(setSearchParams, "page", currentPage);
+    }, [currentPage, setSearchParams]);
 
     return (
         <>
@@ -25,7 +44,7 @@ const ProductList = () => {
                     New
                 </Link>
             </div>
-            <div className="overflow-x-scroll">
+            <div className="overflow-x-scroll pb-6">
                 <table className="table table-zebra">
                     <thead>
                         <tr className="text-sm">
@@ -73,6 +92,11 @@ const ProductList = () => {
                             })}
                     </tbody>
                 </table>
+                <Pagination
+                    pages={pages}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
             </div>
         </>
     );
