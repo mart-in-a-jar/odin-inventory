@@ -158,9 +158,24 @@ const getProductsByCategory = asyncHandler(async (req, res, next) => {
 const search = asyncHandler(async (req, res, next) => {
     // Can later add more query options (e.g. description) and merge ( + filter out duplicates)
     // Add pagination here?
+    const query = { name: new RegExp(req.query.name, "i") };
+
+    const url = req.baseUrl + req.path;
+    const totalProducts = await Product.find(query).countDocuments().exec();
+
+    if (req.query.paginate && totalProducts) {
+        await paginationFunction(Product, query, req, res, totalProducts, url, {
+            field: "categories",
+            filter: { name: 1 },
+        });
+        return;
+    }
+
     const results = await Product.find({
         name: new RegExp(req.query.name, "i"),
-    }).exec();
+    })
+        .populate("categories", { name: 1 })
+        .exec();
 
     res.json(results);
 });
