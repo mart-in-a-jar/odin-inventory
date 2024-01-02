@@ -5,7 +5,8 @@ export const paginationFunction = async (
     res,
     total,
     url,
-    populate = null
+    populate = null,
+    sort
 ) => {
     const paginate = +req.query.paginate;
     const page = +req.query.page || 1;
@@ -18,6 +19,8 @@ export const paginationFunction = async (
                 limit: paginate,
                 skip: skipAmount,
             })
+            .collation({ locale: "en", strength: 2 })
+            .sort(sort)
             .populate(populate.field, populate.filter)
             .exec();
     } else {
@@ -26,6 +29,8 @@ export const paginationFunction = async (
                 limit: paginate,
                 skip: skipAmount,
             })
+            .collation({ locale: "en", strength: 2 })
+            .sort(sort)
             .exec();
     }
 
