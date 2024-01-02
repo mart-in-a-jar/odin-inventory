@@ -54,7 +54,7 @@ const Category = () => {
                     <h2 className="card-title">{category.name}</h2>
                     <div className="card-actions justify-end">
                         <button
-                            className="btn btn-primary btn-accent"
+                            className="btn btn-outline"
                             onClick={() => {
                                 navigate("edit");
                             }}
@@ -62,7 +62,7 @@ const Category = () => {
                             Edit
                         </button>
                         <button
-                            className="btn btn-primary btn-error"
+                            className="btn btn-error"
                             onClick={() => {
                                 setShowDeleteModal(true);
                             }}
