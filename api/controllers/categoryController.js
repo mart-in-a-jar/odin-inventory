@@ -4,7 +4,17 @@ import { paginationFunction } from "../utils/pagination.js";
 
 const getAll = asyncHandler(async (req, res, next) => {
     const url = req.baseUrl + req.path;
+    const sort = req.query.sort;
     const totalCategories = await Category.find({}).countDocuments().exec();
+    let sortQuery = {};
+    if (sort) {
+        if (sort === "name-dec") {
+            sortQuery = { name: -1 };
+        } else if (sort === "name-asc") {
+            sortQuery = { name: 1 };
+        }
+    }
+
     // Return segment
     if (req.query.paginate && totalCategories) {
         await paginationFunction(
@@ -13,12 +23,17 @@ const getAll = asyncHandler(async (req, res, next) => {
             req,
             res,
             totalCategories,
-            url
+            url,
+            null,
+            sortQuery
         );
         return;
     }
     // Return all
-    const allCategories = await Category.find({}).exec();
+    const allCategories = await Category.find({})
+        .collation({ locale: "en", strength: 2 })
+        .sort(sortQuery)
+        .exec();
     res.json({ total: totalCategories, data: allCategories });
 });
 
