@@ -164,13 +164,23 @@ const ProductForm = ({ editMode }) => {
                     />
                 </div>
 
-                <button
-                    className="btn btn-outline"
-                    type="submit"
-                    disabled={isLoading}
-                >
-                    {editMode ? "Update" : "Create"}
-                </button>
+                <div className="flex gap-3 w-full">
+                    <button
+                        className="btn btn-outline btn-primary flex-grow-[3]"
+                        type="submit"
+                        disabled={isLoading}
+                    >
+                        {editMode ? "Update" : "Create"}
+                    </button>
+                    <button
+                        className="btn btn-outline flex-grow-[1]"
+                        onClick={() => {
+                            navigate("..", { relative: "path" });
+                        }}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </form>
         </>
     );
