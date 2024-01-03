@@ -11,3 +11,7 @@ Using ES6 in Node
 - Tailwind with daisyui
 - Custom multiselect
 - Extended daisyui theme
+- Prop-types
+- List, create, edit, delete
+- Search, sort
+- Pagination
