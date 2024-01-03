@@ -34,7 +34,7 @@ const SortDownIcon = (props) => (
 
 const Sort = (props) => (
     <svg
-        width="0.73em"
+        width="0.63em"
         height="1em"
         viewBox="0 0 1024 1408"
         xmlns="http://www.w3.org/2000/svg"
