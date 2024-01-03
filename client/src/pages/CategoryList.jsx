@@ -50,7 +50,7 @@ const CategoryList = () => {
                             onClick={changeSorting}
                         >
                             <SortIcon sort={sortDirection} />
-                            <span>Name</span>
+                            <span className="select-none">Name</span>
                         </th>
                     </tr>
                 </thead>
