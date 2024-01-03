@@ -5,12 +5,21 @@ import mongoose from "mongoose";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import api from "./api/api.js";
+import RateLimit from "express-rate-limit";
+
+// Max 150 requests per minute
+const limiter = RateLimit({
+    windowMs: 1000 * 60,
+    max: 150,
+});
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config();
 const debug = debugModule("odin-inventory-application:server");
 
 const app = express();
+app.disable("x-powered-by");
+app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
