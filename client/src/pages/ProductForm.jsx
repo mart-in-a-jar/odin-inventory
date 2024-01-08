@@ -63,9 +63,7 @@ const ProductForm = ({ editMode }) => {
         e.preventDefault();
         setErrorMessage(null);
         setIsLoading(true);
-        if (productImage) {
-            await uploadFile(productImage, id);
-        }
+
         const payload = {
             name: productName,
             description: productDescription,
@@ -86,7 +84,11 @@ const ProductForm = ({ editMode }) => {
             if (res.ok) {
                 // Successfully created/updated product
                 const newProduct = await res.json();
-                navigate(`/products/${newProduct._id}`);
+                const productId = newProduct._id;
+                if (productImage) {
+                    await uploadFile(productImage, productId);
+                }
+                navigate(`/products/${productId}`);
             } else {
                 const data = await res.json();
                 setErrorMessage(
@@ -179,23 +181,21 @@ const ProductForm = ({ editMode }) => {
                         disabled={isLoading}
                     />
                 </div>
-                {editMode && (
-                    <div className="form-control">
-                        <label htmlFor="productImage" className="label">
-                            Image
-                        </label>
-                        <input
-                            className="file-input file-input-bordered max-w-xs sm:max-w-sm"
-                            type="file"
-                            name="image"
-                            id="productImage"
-                            accept="image/*"
-                            onChange={(e) => {
-                                setProductImage(e.target.files[0]);
-                            }}
-                        />
-                    </div>
-                )}
+                <div className="form-control">
+                    <label htmlFor="productImage" className="label">
+                        Image
+                    </label>
+                    <input
+                        className="file-input file-input-bordered max-w-xs sm:max-w-sm"
+                        type="file"
+                        name="image"
+                        id="productImage"
+                        accept="image/*"
+                        onChange={(e) => {
+                            setProductImage(e.target.files[0]);
+                        }}
+                    />
+                </div>
 
                 <div className="flex gap-3 w-full">
                     <button
