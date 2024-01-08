@@ -27,6 +27,8 @@ mongoose.connect(process.env.MONGO_URL, { dbName: process.env.MONGO_DB });
 
 app.use("/api", api);
 
+// Serve uploaded files
+app.use("/assets/", express.static("uploads"));
 // Serve frontend
 app.use(express.static(path.join(__dirname, "./client/dist")));
 app.get("/*", (req, res) => {

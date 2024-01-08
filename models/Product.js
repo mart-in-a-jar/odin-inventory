@@ -58,6 +58,10 @@ const ProductSchema = new mongoose.Schema(
             },
             set: convertCurrenciesToUpperCase,
         },
+        image: {
+            type: String,
+            default: "default.jpg",
+        },
     },
     { timestamps: true }
 );

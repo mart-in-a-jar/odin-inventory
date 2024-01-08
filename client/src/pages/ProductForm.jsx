@@ -13,6 +13,7 @@ const ProductForm = ({ editMode }) => {
     const [productCategories, setProductCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [productImage, setProductImage] = useState(null);
 
     const navigate = useNavigate();
     const { id } = useParams();
@@ -46,10 +47,25 @@ const ProductForm = ({ editMode }) => {
         })();
     }, []);
 
+    const uploadFile = async (file, id) => {
+        const formData = new FormData();
+        // Text fields has to come before files to be accessible in multer filename function
+        formData.append("id", id);
+        formData.append("name", id);
+        formData.append("image", file);
+        await fetch("/api/files/upload", {
+            method: "POST",
+            body: formData,
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(null);
         setIsLoading(true);
+        if (productImage) {
+            await uploadFile(productImage, id);
+        }
         const payload = {
             name: productName,
             description: productDescription,
@@ -163,6 +179,23 @@ const ProductForm = ({ editMode }) => {
                         disabled={isLoading}
                     />
                 </div>
+                {editMode && (
+                    <div className="form-control">
+                        <label htmlFor="productImage" className="label">
+                            Image
+                        </label>
+                        <input
+                            className="file-input file-input-bordered max-w-xs sm:max-w-sm"
+                            type="file"
+                            name="image"
+                            id="productImage"
+                            accept="image/*"
+                            onChange={(e) => {
+                                setProductImage(e.target.files[0]);
+                            }}
+                        />
+                    </div>
+                )}
 
                 <div className="flex gap-3 w-full">
                     <button

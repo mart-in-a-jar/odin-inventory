@@ -43,11 +43,8 @@ const Product = () => {
             {notFound && <ErrorPage />}
             {product && (
                 <div className="card card-side bg-base-100 shadow-xl">
-                    <figure className="self-start">
-                        <img
-                            src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
-                            alt="Movie"
-                        />
+                    <figure className="self-start w-72 max-h-96">
+                        <img src={`/assets/${product.image}`} alt="Product" />
                     </figure>
                     <div className="card-body">
                         <h2 className="card-title">{product.name}</h2>
