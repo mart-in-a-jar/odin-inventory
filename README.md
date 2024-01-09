@@ -17,3 +17,20 @@ Using ES6 in Node
 - Search, sort
 - Pagination
 - Upload product image
+
+
+### Environment variables needed
+- PORT
+- MONGO_URL
+- MONGO_DB
+
+### Start development environment
+```sh
+npm run dev
+cd client && npm run dev
+```
+
+### Build frontend
+```sh
+cd client && npm run build
+```
