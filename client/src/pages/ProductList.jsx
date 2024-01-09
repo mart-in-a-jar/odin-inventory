@@ -97,7 +97,7 @@ const ProductList = ({ maxItems }) => {
                     New
                 </Link>
             </div>
-            <div className="overflow-x-scroll pb-6">
+            <div className="pb-6">
                 <table className="table table-zebra">
                     <thead>
                         <tr className="text-sm">
@@ -107,7 +107,7 @@ const ProductList = ({ maxItems }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products &&
+                        {products && products.length > 0 ? (
                             products.map((product) => {
                                 return (
                                     <tr key={product._id} className="hover">
@@ -142,14 +142,21 @@ const ProductList = ({ maxItems }) => {
                                         </td>
                                     </tr>
                                 );
-                            })}
+                            })
+                        ) : (
+                            <tr>
+                                <td>No results</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
-                <Pagination
-                    pages={pages}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                />
+                {pages && (
+                    <Pagination
+                        pages={pages}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
+                )}
             </div>
         </>
     );
