@@ -1,5 +1,5 @@
 import debugModule from "debug";
-import dotenv from "dotenv";
+import "dotenv/config.js";
 import express from "express";
 import mongoose from "mongoose";
 import path, { dirname } from "path";
@@ -14,7 +14,6 @@ const limiter = RateLimit({
 });
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config();
 const debug = debugModule("odin-inventory-application:server");
 
 const app = express();
